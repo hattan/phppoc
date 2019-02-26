@@ -1,6 +1,6 @@
 <?php
- echo '  /\_/\ <Br/>\n<';
- echo '=( °w° )= <Br/>\n';
- echo '  )   (  // <Br/>\n';
- echo ' (__ __)// <Br/>\n';
+ echo '  /\_/\ <Br/>';
+ echo '=( °w° )= <Br/>';
+ echo '  )   (  // <Br/>';
+ echo ' (__ __)// <Br/>';
 ?>
