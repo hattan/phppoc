@@ -1,6 +1,3 @@
 <?php
- echo '  /\_/\ <Br/>';
- echo '=( °w° )= <Br/>';
- echo '  )   (  // <Br/>';
- echo ' (__ __)// <Br/>';
+  echo "feature 2 change - " . date("Y-m-d H:i:s");
 ?>
