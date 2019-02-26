@@ -1,0 +1,34 @@
+pool:
+  vmImage: Hosted Ubuntu 1604
+
+  variables:
+  imageName: 'phppoc'
+
+steps:
+- script: 'echo {"envName" : "$(envName)"} > env.json'
+  workingDirectory: helm
+  displayName: 'Set Variable'
+
+- task: Docker@0
+  displayName: 'Build  Image'
+  inputs:
+    azureSubscription: $(azureSubscription)
+    azureContainerRegistry: '$(azureContainerRegistry)'
+    imageName: '$(imageName):$(Build.BuildId)'
+    includeLatestTag: true
+
+- task: Docker@0
+  displayName: 'Push an image'
+  inputs:
+    azureSubscription: AzureServiceConnection
+    azureContainerRegistry: '$(azureContainerRegistry)'
+    action: 'Push an image'
+    imageName: '$(imageName):$(Build.BuildId)'
+    includeLatestTag: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: phppoc'
+  inputs:
+    PathtoPublish: helm
+    ArtifactName: phppoc
+

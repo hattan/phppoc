@@ -1,0 +1,29 @@
+steps:
+- script: |
+   ENV=$(cat env.json | jq ".envName" -r)
+   echo "##vso[task.setvariable variable=envName]$ENV"
+  workingDirectory: '$(System.DefaultWorkingDirectory)/_Build/phppoc'
+  displayName: 'Get Env Name'
+
+steps:
+- task: HelmInstaller@0
+  displayName: 'Install Helm 2.9.1'
+  inputs:
+    checkLatestHelmVersion: false
+    kubectlVersion: 1.10.3
+    checkLatestKubectl: false
+
+steps:
+- task: HelmDeploy@0
+  displayName: 'helm upgrade'
+  inputs:
+    connectionType: '$(Parameters.connectionType)'
+    azureSubscription: '$(Parameters.azureSubscriptionEndpoint)'
+    azureResourceGroup: '$(Parameters.azureResourceGroup)'
+    kubernetesCluster: '$(Parameters.kubernetesCluster)'
+    command: upgrade
+    chartType: FilePath
+    chartPath: '$(System.DefaultWorkingDirectory)/_Build/phppoc'
+    releaseName: '$(envName)'
+    valueFile: '$(System.DefaultWorkingDirectory)/_Build/phppoc/values.yaml'
+    arguments: '--set image.tag=$(Build.BuildId) --set ingress.path=/$(envName)'
